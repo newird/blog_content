@@ -3,8 +3,49 @@ title: 'build blog'
 date: '2023-03-26'
 tags: ['blog', 'server','docker']
 draft: false
-summary: 'build blog .'
+summary: 'build blog using tailwind template'
 ---
+
+# Build blog
+
+## get template
+
+
+
+## create a docker file
+
+here is the docker file ( by chatgpt :balloon:)
+
+```dockerfile
+FROM node:18
+
+WORKDIR /app
+
+# 复制应用程序到容器
+COPY . .
+
+# 安装依赖项并运行应用程序
+RUN npm install
+CMD npm run dev
+
+# 映射容器端口到主机端口
+EXPOSE 3000
+
+```
+
+build
+
+```shell
+sudo docker build -t  my-blog 
+```
+
+run
+
+```shell
+sudo docker run  --name blog -p  3000:3000 -v /host-path/data:/app/data -v /host-path/public:/app/public  my-blog
+```
+
+
 
 
 

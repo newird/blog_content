@@ -12,7 +12,15 @@ One of the best advantages of LVM is that it can easily change the size of a vol
 
 ## Reducing the size 
 
-From previous tutorials, you may have learned that reducing the size of a volume requires `umount` and `resize2fs`. However, in my recent experience, I found that these steps were not necessary. You can simply enter the command:
+~~From previous tutorials, you may have learned that reducing the size of a volume requires `umount` and `resize2fs`. However, in my recent experience, I found that these steps were not necessary.~~
+
+I spend a lot of time for my mistake. First ,you need to resize the file system use:
+
+```shell
+sudo resize2fs -L -100G  /dev/mapper/vol0-lv_root
+```
+
+You can ~~simply~~ enter the command to reduce the disk size:
 
 ```shell
 sudo lvreduce -L -100G /dev/mapper/vol0-lv_root

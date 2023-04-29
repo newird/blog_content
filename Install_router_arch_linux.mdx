@@ -17,7 +17,7 @@ For various reasons, I decided to install a software router on my Arch Linux sys
 This step is optional but recommended for better organization. You can retrieve your MAC address by running the ip a command, which is short for ip address show. I had four network interfaces, so I added the following lines to the /etc/udev/rules.d/10-network.rules file:
 
 ```
-# /etc/udev/rules.d/10-network.rules
+#sudo  nvim /etc/udev/rules.d/10-network.rules
 SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="MAC_ADDRESS", NAME="extern0"
 SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="MAC_ADDRESS", NAME="intern0"
 SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="MAC_ADDRESS", NAME="intern1"
@@ -36,7 +36,7 @@ udevadm trigger
 To set the WAN (Wide Area Network), create the /etc/systemd/network/20-wired-external-dhcp.network file with the following content:
 
 ```code
-# /etc/systemd/network/20-wired-external-dhcp.network
+# sudo nvim /etc/systemd/network/20-wired-external-dhcp.network
 [Match]
 Name=extern0 #if you skip the rename step ,you can find your interface by `ip a` ,normally ,it is called enp* 
 
@@ -155,7 +155,7 @@ systemctl enable --now dhcpd4@br_lan.service
 To start using clash, we need to set up internal forwarding. Create a new configuration file:
 
 ```
-nvim /etc/sysctl.d/30-ipforward.conf
+# nvim /etc/sysctl.d/30-ipforward.conf
 net.ipv4.ip_forward=1
 net.ipv6.ip_forward=1
 ```
@@ -270,11 +270,11 @@ while ! ip address show utun > /dev/null; do
 done
 
 ip route flush table 233
-ip route add default via 198.19.0.1 dev utun table 233
-ip route add 198.19.0.0/16 dev utun table 233
-ip route add 10.0.0.0/16 dev enp3s0 table 233
+ip route add default via 198.18.0.1 dev utun table 233
+ip route add 198.18.0.0/16 dev utun table 233
+ip route add 10.0.0.0/24 dev br_lan table 233
 
-ip rule add from 10.0.0.0/16 table 233
+ip rule add from 10.0.0.0/24 table 233
 ```
 
 and delete the table after clash stop
